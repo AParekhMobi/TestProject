@@ -47,8 +47,6 @@ public class DetailActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_detail);
 
-
-
         long id = getIntent().getLongExtra("selectedID", 0);
         int selectedPostion = getIntent().getIntExtra("selectePosition",0);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout), "EXTRA_IMAGE");
