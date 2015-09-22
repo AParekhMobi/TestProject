@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
@@ -13,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -93,7 +96,35 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        RecyclerView recList = (RecyclerView) findViewById(R.id.albumList);
+
+        LinearLayout llCard = (LinearLayout) findViewById(R.id.llAlbumList);
+        View viewGroup;
+        LayoutInflater inflater = getLayoutInflater();
+        TextView albumName;
+        TextView albumType;
+        ImageView albumImg;
+
+
+        for (Album album : artistAlbumList) {
+
+            viewGroup = inflater.inflate(R.layout.album_items, null);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(10, 10, 10, 10);
+            viewGroup.setLayoutParams(params);
+
+            albumName = (TextView) viewGroup.findViewById(R.id.albumTitle);
+            albumType = (TextView) viewGroup.findViewById(R.id.albumType);
+            albumImg = (ImageView)viewGroup.findViewById(R.id.imgAlbum);
+            albumName.setText(album.getTitle());
+            albumType.setText(album.getType());
+            Picasso.with(this).load(album.getPicture()).into(albumImg);
+            llCard.addView(viewGroup);
+        }
+
+             /*   RecyclerView recList = (RecyclerView) findViewById(R.id.albumList);
         recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -114,10 +145,13 @@ public class DetailActivity extends AppCompatActivity {
             recList.setAdapter(new DetailRecyclerAdapter(artistAlbumList));
         }else {
             recList.setVisibility(View.GONE);
-        }
+        }*/
+
     }
 
-    @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
         try {
             return super.dispatchTouchEvent(motionEvent);
         } catch (NullPointerException e) {
